@@ -35,19 +35,35 @@ public:
     OptionManager();
 
     WTF8::u8string get_output_file_name() const { return output_file_name; }
+    void set_output_file_name(WTF8::u8string new_file_name) {output_file_name = new_file_name;}
     WTF8::u8string get_input_file_name() const { return input_file_name; }
+    void set_input_file_name(WTF8::u8string new_input_file_name){input_file_name = new_input_file_name;}
     double get_stp() const { return stp; }
+    void set_stp(double new_stp) {stp = new_stp; }
     double get_note_length() const { return note_length; }
+    void set_note_length(double new_note_length) {note_length = new_note_length;}
     double get_overlap() const { return overlap; }
+    void set_overlap(double new_overlap){overlap = new_overlap;}
     double get_env_p(size_t idx) const {
         assert(idx > 0 && idx < 6);
         return p[idx];
+    }
+    void set_env_p(double new_env_p[6])
+    {
+        delete[] p;
+        p = new_env_p;
     }
     double get_env_v(size_t idx) const {
         assert(idx > 0 && idx < 6);
         return v[idx];
     }
+    void set_env_v(double new_env_v[6])
+    {
+        delete v;
+        v = new_env_v;
+    }
     bool is_p5_enabled() const { return p5_enabled; }
+    void set_p5_enabled(bool new_state){p5_enabled = new_state;}
 protected:
     WTF8::u8string output_file_name;
     WTF8::u8string input_file_name;
@@ -57,8 +73,8 @@ protected:
     double note_length = 0;
     double overlap = 0;
 
-    double p[6] = { 0, 0, 0, 0, 0, 0 };
-    double v[6] = { 1, 1, 1, 1, 1, 1 };
+    double *p = new double[6] { 0, 0, 0, 0, 0, 0 };
+    double *v = new double[6] { 1, 1, 1, 1, 1, 1 };
     bool p5_enabled = false;
 };
 

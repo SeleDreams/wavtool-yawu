@@ -15,8 +15,8 @@ if("${YAWU_OUTPUT_SAMPLE_FORMAT}" STREQUAL "")
 endif()
 add_definitions("-DYAWU_OUTPUT_SAMPLE_FORMAT=${YAWU_OUTPUT_SAMPLE_FORMAT}")
 
-file(GLOB_RECURSE YAWU_SRC_SOURCES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.cpp")
-add_executable(wavtool-yawu ${YAWU_SRC_SOURCES})
+file(GLOB_RECURSE YAWU_SRC_SOURCES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "src/*.cpp" "src/*.hpp"  )
+add_library(wavtool-yawu ${YAWU_SRC_SOURCES})
 
 set_target_properties(wavtool-yawu PROPERTIES
     CXX_STANDARD 11
@@ -30,10 +30,9 @@ if(YAWU_HAVE_LIBM)
 endif()
 
 add_subdirectory(lib/libWinTF8)
-target_link_libraries(wavtool-yawu PUBLIC wintf8)
-add_subdirectory(lib/libsndfile-1.0.25)
-target_link_libraries(wavtool-yawu PUBLIC sndfile)
-
+target_include_directories(wavtool-yawu PUBLIC ${SNDFILE_INCLUDE_DIRS})
+target_link_libraries(wavtool-yawu PUBLIC wintf8 ${SNDFILE_LIBRARIES})
+set(WAVTOOL-YAWU_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src PARENT_SCOPE)
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")  # Test subproject
     install(TARGETS wavtool-yawu
         RUNTIME DESTINATION "bin"
