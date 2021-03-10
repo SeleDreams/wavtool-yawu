@@ -140,7 +140,9 @@ PCMMerger &PCMMerger::read_new_segment() {
             ssize_t stp_samples = ssize_t(std::round(option_manager.get_stp() * p->sample_rate));
             if(stp_samples >= 0) {
                 p->input_file.seek(stp_samples, SEEK_SET);
-                if(p->input_file.read(p->buffer2.data(), p->buffer2.size()) < p->buffer2.size())
+                auto output = p->input_file.read(p->buffer2.data(), p->buffer2.size());
+                auto buffer2size = p->buffer2.size();
+				if( output < buffer2size )
                     WTF8::cerr << "Warning: Input file is not long enough" << std::endl;
             } else {
                 auto neg_stp_samples = -stp_samples;

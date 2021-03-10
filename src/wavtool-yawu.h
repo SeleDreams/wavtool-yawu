@@ -6,8 +6,8 @@
 #define LMMS_WAVTOOL_YAWU_H
 class WAVTOOL_YAWU{
 public:
-    static int process(std::string &outputPath,
-                std::string &inputPath,
+    static int process(const std::string &outputPath,
+                const std::string &inputPath,
                 double scaledStartPoint,
                 double scaledNoteLength,
                 double p1,

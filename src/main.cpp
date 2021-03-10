@@ -23,41 +23,19 @@
 #include "cmdline_parser.hpp"
 #include "pcm_merger.hpp"
 #include "proxy_ptr.hpp"
-#include "wavtool-yawu.h"
 
-int WAVTOOL_YAWU::process(const std::string &outputPath,
-            const std::string &inputPath,
-            double scaledStartPoint,
-            double scaledNoteLength,
-            double p1,
-            double p2,
-            double p3,
-            double v1,
-            double v2,
-            double v3,
-            double v4,
-            double overlap,
-            double p4,
-            double p5,
-            double v5,
-            bool p5_enabled) {
+int main() {
     using namespace YAWU;
 
     proxy_ptr<OptionManager> option_manager; // full lifetime object
-    option_manager->set_output_file_name(outputPath.c_str());
-    option_manager->set_input_file_name(inputPath.c_str());
-    option_manager->set_stp(scaledStartPoint / 1000);
-    option_manager->set_note_length(scaledNoteLength / 1000);
-    double *p = new double[6]{0,p1 / 1000,p2 / 1000,p3 / 1000,p4 / 1000,p5 / 1000};
-    double *v = new double[6] {1,v1 / 100,v2 / 100,v3 / 100,v4 / 100,v5 / 100};
-    option_manager->set_env_p(p);
-    option_manager->set_env_v(v);
-    option_manager->set_p5_enabled(p5_enabled);
-    option_manager->set_overlap(overlap / 1000);
-    WTF8::cout << std::endl
+
+    WTF8::cerr << std::endl
                << "wavtool-yawu, Yet Another Wavtool for UTAU" << std::endl
                << "https://github.com/m13253/wavtool-yawu" << std::endl
                << std::endl;
+
+    CmdlineParser(*option_manager.get())
+        .parse_argv(WTF8::getargv());
 
     PCMMerger(*option_manager.get())
         .prepare()
